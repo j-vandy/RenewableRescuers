@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class StartScreen : Screen
 {
+    [SerializeField] private Screen loadingScreen;
     [SerializeField] private Screen lobbyScreen;
 
     void OnEnable()
@@ -16,6 +17,8 @@ public class StartScreen : Screen
 
     void Awake()
     {
+        if (loadingScreen == null)
+            Utils.DebugNullReference("StartScreen", "loadingScreen");
         if (lobbyScreen == null)
             Utils.DebugNullReference("StartScreen", "lobbyScreen");
     }
@@ -23,11 +26,22 @@ public class StartScreen : Screen
     private void LoadLobbyScreen()
     {
         lobbyScreen.Enable();
-        Disable();
+        loadingScreen.Disable();
     }
 
-    public void StartBttnClicked()
+    public void StartButtonClicked()
     {
+        loadingScreen.Enable();
+        Disable();
         PhotonManager.Instance.ConnectUsingSettings();
+    }
+
+    public void QuitButtonClicked()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 }

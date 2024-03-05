@@ -6,39 +6,26 @@ using UnityEngine.UI;
 
 public class LobbyScreen : Screen
 {
-    [SerializeField] private TMP_InputField createInputField;
-    [SerializeField] private TMP_InputField joinInputField;
-
-    void OnEnable()
-    {
-        PhotonManager.Instance.OnJoinedRoomAction += LoadLevel;
-    }
-
-    void OnDisable()
-    {
-        PhotonManager.Instance.OnJoinedRoomAction -= LoadLevel;
-    }
+    [SerializeField] private Screen createRoomScreen;
+    [SerializeField] private Screen joinRoomScreen;
 
     void Awake()
     {
-        if (createInputField == null)
-            Utils.DebugNullReference("LobbyScreen", "createInputField");
-        if (createInputField == null)
-            Utils.DebugNullReference("LobbyScreen", "joinInputField");
+        if (createRoomScreen == null)
+            Utils.DebugNullReference("LobbyScreen", "createRoomScreen");
+        if (joinRoomScreen == null)
+            Utils.DebugNullReference("LobbyScreen", "joinRoomScreen");
     }
 
-    private void LoadLevel()
+    public void CreateGameButtonClicked()
     {
-        PhotonManager.Instance.LoadLevel(Utils.SCENE_GAME);
+        createRoomScreen.Enable();
+        Disable();
     }
 
-    public void CreateBttnClicked()
+    public void JoinGameButtonClicked()
     {
-        PhotonManager.Instance.CreateRoom(createInputField.text);
-    }
-
-    public void JoinBttnClicked()
-    {
-        PhotonManager.Instance.JoinRoom(joinInputField.text);
+        joinRoomScreen.Enable();
+        Disable();
     }
 }
