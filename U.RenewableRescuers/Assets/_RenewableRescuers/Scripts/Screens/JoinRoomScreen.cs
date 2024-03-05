@@ -10,12 +10,7 @@ public class JoinRoomScreen : Screen
     {
     }
 
-    public void CreateBttnClicked()
-    {
-        //PhotonManager.Instance.CreateRoom(createInputField.text);
-    }
-
-    public void JoinBttnClicked()
+    public void JoinButtonClicked()
     {
         //PhotonManager.Instance.JoinRoom(joinInputField.text);
     }
