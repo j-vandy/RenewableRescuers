@@ -9,7 +9,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public Action OnConnectToMasterAction = null;
     public Action OnJoinedLobbyAction = null;
     public Action OnJoinedRoomAction = null;
+    public Action OnLeftRoomAction = null;
     public Action OnRoomListUpdateAction = null;
+    public Action OnPlayerEnteredRoomAction = null;
+    public Action OnPlayerLeftRoomAction = null;
     public List<RoomInfo> roomList = new List<RoomInfo>();
     private static PhotonManager _Instance;
     public static PhotonManager Instance
@@ -28,6 +31,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public void ConnectUsingSettings()
     {
         PhotonNetwork.ConnectUsingSettings();
+    }
+
+    public void Disconnect()
+    {
+        PhotonNetwork.Disconnect();
     }
 
     public override void OnConnectedToMaster()
@@ -50,6 +58,12 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(roomName);
     }
 
+    public void DestroyRoom()
+    {
+        foreach (Player player in PhotonNetwork.PlayerList)
+            PhotonNetwork.CloseConnection(player);
+    }
+
     public void JoinRoom(string roomName)
     {
         PhotonNetwork.JoinRoom(roomName);
@@ -60,6 +74,32 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         if (OnJoinedRoomAction != null)
             OnJoinedRoomAction();
         base.OnJoinedRoom();
+    }
+
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
+        if (OnLeftRoomAction != null)
+            OnLeftRoomAction();
+        base.OnLeftRoom();
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        if (OnPlayerEnteredRoomAction != null)
+            OnPlayerEnteredRoomAction();
+        base.OnPlayerEnteredRoom(newPlayer);
+    }
+
+    public override void OnPlayerLeftRoom(Player newPlayer)
+    {
+        if (OnPlayerLeftRoomAction != null)
+            OnPlayerLeftRoomAction();
+        base.OnPlayerLeftRoom(newPlayer);
     }
 
     public void LoadLevel(string levelName)
@@ -78,12 +118,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
         if (OnRoomListUpdateAction != null)
             OnRoomListUpdateAction();
-
-        // for testing purposes
-        foreach (RoomInfo room in roomList)
-        {
-            Debug.Log("Room Name: " + room.Name);
-        }
 
         base.OnRoomListUpdate(roomList);
     }

@@ -175,8 +175,9 @@ GameObject:
   - component: {fileID: 5307447181000053254}
   - component: {fileID: 6517455605358085623}
   - component: {fileID: 7158233118579634518}
+  - component: {fileID: 8285783139942494229}
   m_Layer: 5
-  m_Name: RoomList
+  m_Name: DynamicList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -221,7 +222,7 @@ MonoBehaviour:
   m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
-  m_DecelerationRate: 0.01
+  m_DecelerationRate: 0.05
   m_ScrollSensitivity: 15
   m_Viewport: {fileID: 7673678994845390192}
   m_HorizontalScrollbar: {fileID: 0}
@@ -284,6 +285,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!114 &8285783139942494229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5465131442572151738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8474b301dc261e44b858e08165ccc285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contentElementPrefab: {fileID: 297174332841277991, guid: 0a3b4d0c545e3d849b8058070bdb6aa9, type: 3}
+  content: {fileID: 8236944995829471282}
 --- !u!1001 &7802190625620477490
 PrefabInstance:
   m_ObjectHideFlags: 0

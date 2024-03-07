@@ -6,11 +6,14 @@ using UnityEngine.UI;
 
 public class LobbyScreen : Screen
 {
+    [SerializeField] private Screen startScreen;
     [SerializeField] private Screen createRoomScreen;
     [SerializeField] private Screen joinRoomScreen;
 
     void Awake()
     {
+        if (startScreen == null)
+            Utils.DebugNullReference("LobbyScreen", "startScreen");
         if (createRoomScreen == null)
             Utils.DebugNullReference("LobbyScreen", "createRoomScreen");
         if (joinRoomScreen == null)
@@ -26,6 +29,13 @@ public class LobbyScreen : Screen
     public void JoinGameButtonClicked()
     {
         joinRoomScreen.Enable();
+        Disable();
+    }
+
+    public void BackButtonClicked()
+    {
+        PhotonManager.Instance.Disconnect();
+        startScreen.Enable();
         Disable();
     }
 }

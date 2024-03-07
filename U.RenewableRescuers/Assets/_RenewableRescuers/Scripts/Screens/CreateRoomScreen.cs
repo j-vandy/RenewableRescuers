@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class CreateRoomScreen : Screen
 {
+    [SerializeField] private GameDataSO gameData;
+    [SerializeField] private Screen lobbyScreen;
     [SerializeField] private Screen waitingRoomScreen;
     [SerializeField] private TMP_InputField gameNameInputField;
 
@@ -21,6 +23,10 @@ public class CreateRoomScreen : Screen
 
     void Awake()
     {
+        if (gameData == null)
+            Utils.DebugNullReference("CreateRoomScreen", "gameData");
+        if (lobbyScreen == null)
+            Utils.DebugNullReference("CreateRoomScreen", "lobbyScreen");
         if (waitingRoomScreen == null)
             Utils.DebugNullReference("CreateRoomScreen", "waitingRoomScreen");
         if (gameNameInputField == null)
@@ -29,6 +35,7 @@ public class CreateRoomScreen : Screen
 
     private void JoinWaitingRoom()
     {
+        gameData.bIsHost = true;
         waitingRoomScreen.Enable();
         Disable();
     }
@@ -36,5 +43,11 @@ public class CreateRoomScreen : Screen
     public void CreateButtonClicked()
     {
         PhotonManager.Instance.CreateRoom(gameNameInputField.text);
+    }
+
+    public void BackButtonClicked()
+    {
+        lobbyScreen.Enable();
+        Disable();
     }
 }
