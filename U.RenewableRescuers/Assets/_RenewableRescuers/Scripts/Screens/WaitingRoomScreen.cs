@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,19 +8,20 @@ public class WaitingRoomScreen : Screen
     [SerializeField] private GameDataSO gameData;
     [SerializeField] private Screen lobbyScreen;
     [SerializeField] private Screen joinRoomScreen;
+    [SerializeField] private Toggle toggle;
     [SerializeField] private Button startButton;
 
     private void OnEnable()
     {
-        PhotonManager.Instance.OnPlayerEnteredRoomAction += EnableButton;
-        PhotonManager.Instance.OnPlayerLeftRoomAction += DisableButton;
+        PhotonManager.Instance.OnPlayerEnteredRoomAction += EnableStartButton;
+        PhotonManager.Instance.OnPlayerLeftRoomAction += DisableStartButton;
         PhotonManager.Instance.OnLeftRoomAction += OnLeftRoomLoadScreen;
     }
 
     private void OnDisable()
     {
-        PhotonManager.Instance.OnPlayerEnteredRoomAction -= EnableButton;
-        PhotonManager.Instance.OnPlayerLeftRoomAction -= DisableButton;
+        PhotonManager.Instance.OnPlayerEnteredRoomAction -= EnableStartButton;
+        PhotonManager.Instance.OnPlayerLeftRoomAction -= DisableStartButton;
         PhotonManager.Instance.OnLeftRoomAction -= OnLeftRoomLoadScreen;
     }
 
@@ -33,16 +33,18 @@ public class WaitingRoomScreen : Screen
             Utils.DebugNullReference("WaitingRoomScreen", "lobbyScreen");
         if (joinRoomScreen == null)
             Utils.DebugNullReference("WaitingRoomScreen", "joinRoomScreen");
+        if (toggle == null)
+            Utils.DebugNullReference("WaitingRoomScreen", "toggle");
         if (startButton == null)
             Utils.DebugNullReference("WaitingRoomScreen", "startButton");
     }
 
-    private void EnableButton()
+    private void EnableStartButton()
     {
         startButton.interactable = true;
     }
 
-    private void DisableButton()
+    private void DisableStartButton()
     {
         startButton.interactable = false;
     }
@@ -58,14 +60,44 @@ public class WaitingRoomScreen : Screen
 
     public void StartButtonClicked()
     {
-        PhotonManager.Instance.LoadLevel(Utils.SCENE_GAME);
+        PhotonManager.Instance.LoadLevel(Utils.SCENE_RENEWABLE_ENERGY);
     }
 
     public void BackButtonClicked()
     {
         if (gameData.bIsHost)
-            PhotonManager.Instance.DestroyRoom();
+            PhotonManager.Instance.CloseRoom();
         else
             PhotonManager.Instance.LeaveRoom();
+    }
+
+    public override void Enable()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.GetComponent<Button>() == startButton && !gameData.bIsHost)
+                continue;
+            if (child.GetComponent<Toggle>() == toggle && !gameData.bIsHost)
+                continue;
+            child.gameObject.SetActive(true);
+        }
+        SetPlayerCharacter(toggle.isOn);
+    }
+
+    public override void Disable()
+    {
+        if (gameData.bIsHost)
+            toggle.isOn = true;
+        base.Disable();
+    }
+
+    public void SetPlayerCharacter(bool IsEcoEddy)
+    {
+        gameData.Print();
+        if (gameData.bIsHost)
+            gameData.bIsEddy = IsEcoEddy;
+        else
+            gameData.bIsEddy = !IsEcoEddy;
+        gameData.Print();
     }
 }

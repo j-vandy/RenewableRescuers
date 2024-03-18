@@ -35,7 +35,6 @@ public class LobbyScreen : Screen
     public void BackButtonClicked()
     {
         PhotonManager.Instance.Disconnect();
-        startScreen.Enable();
-        Disable();
+        ScreenTransition(startScreen);
     }
 }

@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_RenewableRescuers/Scenes/MainMenu.unity
     guid: ac3d99db56dad834392590b7997a3f3d
+  - enabled: 1
+    path: Assets/_RenewableRescuers/Scenes/RenewableEnergy.unity
+    guid: 5ba817c79fea0e2429b02b5034252a1e
   m_configObjects: {}

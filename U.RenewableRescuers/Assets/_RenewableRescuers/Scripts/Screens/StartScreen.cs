@@ -4,6 +4,8 @@ public class StartScreen : Screen
 {
     [SerializeField] private Screen loadingScreen;
     [SerializeField] private Screen lobbyScreen;
+    [SerializeField] private Screen settingsScreen;
+    [SerializeField] private Screen creditsScreen;
 
     void OnEnable()
     {
@@ -21,20 +23,23 @@ public class StartScreen : Screen
             Utils.DebugNullReference("StartScreen", "loadingScreen");
         if (lobbyScreen == null)
             Utils.DebugNullReference("StartScreen", "lobbyScreen");
+        if (settingsScreen == null)
+            Utils.DebugNullReference("StartScreen", "settingsScreen");
+        if (creditsScreen == null)
+            Utils.DebugNullReference("StartScreen", "creditsScreen");
     }
 
-    private void LoadLobbyScreen()
-    {
-        lobbyScreen.Enable();
-        loadingScreen.Disable();
-    }
+    private void LoadLobbyScreen() => loadingScreen.ScreenTransition(lobbyScreen);
 
     public void StartButtonClicked()
     {
-        loadingScreen.Enable();
-        Disable();
+        ScreenTransition(loadingScreen);
         PhotonManager.Instance.ConnectUsingSettings();
     }
+
+    public void SettingsButtonClicked() => ScreenTransition(settingsScreen);
+
+    public void CreditsButtonClicked() => ScreenTransition(creditsScreen);
 
     public void QuitButtonClicked()
     {

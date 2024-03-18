@@ -3,7 +3,7 @@ using UnityEngine;
 public class Utils
 {
     public const string SCENE_MAIN_MENU = "MainMenu";
-    public const string SCENE_GAME = "Game";
+    public const string SCENE_RENEWABLE_ENERGY = "RenewableEnergy";
     public const string INPUT_AXIS_VERTICAL = "Vertical";
     public const string INPUT_AXIS_HORIZONTAL = "Horizontal";
 

@@ -1,20 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnPlayers : MonoBehaviour
 {
-    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameDataSO gameData;
+    [SerializeField] private GameObject ecoEddyPrefab;
+    [SerializeField] private GameObject solarSamPrefab;
+    private bool bPlayerSpawned = false;
 
     void Start()
     {
-        if (playerPrefab == null)
+        if (gameData == null)
         {
-            Utils.DebugNullReference("SpawnPlayer", "playerPrefab");
+            Utils.DebugNullReference("SpawnPlayer", "gameData");
+            return;
+        }
+        if (ecoEddyPrefab == null)
+        {
+            Utils.DebugNullReference("SpawnPlayer", "ecoEddyPrefab");
+            return;
+        }
+        if (solarSamPrefab == null)
+        {
+            Utils.DebugNullReference("SpawnPlayer", "solarSamPrefab");
             return;
         }
 
-        Vector3 randomPosition = new Vector3(Random.value * 16f - 8f, Random.value * 8f - 4f);
-        PhotonManager.Instance.Instantiate(playerPrefab.name, randomPosition, Quaternion.identity);
+        if (!bPlayerSpawned)
+        {
+            if (gameData.bIsEddy)
+                PhotonManager.Instance.Instantiate(ecoEddyPrefab.name, new Vector3(-5f, 0f), Quaternion.identity);
+            else
+                PhotonManager.Instance.Instantiate(solarSamPrefab.name, new Vector3(5f, 0f), Quaternion.identity);
+            bPlayerSpawned = true;
+        }
     }
 }

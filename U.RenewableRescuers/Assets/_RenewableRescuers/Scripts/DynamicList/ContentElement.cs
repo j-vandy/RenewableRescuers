@@ -26,7 +26,7 @@ public class ContentElement : MonoBehaviour
     public void Set(RoomInfo roomInfo)
     {
         this.roomInfo = roomInfo;
-        playerCountText.text = roomInfo.PlayerCount + "/2";
+        playerCountText.text = roomInfo.PlayerCount + "/" + PhotonManager.MAX_PLAYERS;
         roomNameText.text = roomInfo.Name;
     }
 

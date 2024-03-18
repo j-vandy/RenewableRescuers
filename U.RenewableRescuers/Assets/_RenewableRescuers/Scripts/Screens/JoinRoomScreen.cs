@@ -39,9 +39,5 @@ public class JoinRoomScreen : Screen
         UpdateRoomList();
     }
 
-    public void BackButtonClicked()
-    {
-        lobbyScreen.Enable();
-        Disable();
-    }
+    public void BackButtonClicked() => ScreenTransition(lobbyScreen);
 }

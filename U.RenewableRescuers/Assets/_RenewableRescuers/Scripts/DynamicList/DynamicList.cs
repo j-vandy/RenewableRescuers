@@ -30,6 +30,8 @@ public class DynamicList : MonoBehaviour
         ClearList();
         foreach(RoomInfo roomInfo in roomInfos)
         {
+            if (roomInfo.PlayerCount <= 0 || roomInfo.PlayerCount >= PhotonManager.MAX_PLAYERS)
+                continue;
             GameObject contentElement = Instantiate(contentElementPrefab);
             contentElement.transform.SetParent(content, false);
             contentElement.GetComponent<ContentElement>().Set(roomInfo);

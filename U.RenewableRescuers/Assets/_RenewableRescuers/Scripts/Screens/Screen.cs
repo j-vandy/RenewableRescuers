@@ -32,4 +32,10 @@ public abstract class Screen : MonoBehaviour
         foreach(Transform child in transform)
             child.gameObject.SetActive(false);
     }
+
+    public virtual void ScreenTransition(Screen screenToEnable)
+    {
+        screenToEnable.Enable();
+        Disable();
+    }
 }

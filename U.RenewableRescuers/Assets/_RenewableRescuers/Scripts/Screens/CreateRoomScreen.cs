@@ -9,6 +9,7 @@ public class CreateRoomScreen : Screen
     [SerializeField] private GameDataSO gameData;
     [SerializeField] private Screen lobbyScreen;
     [SerializeField] private Screen waitingRoomScreen;
+    [SerializeField] private Screen loadingScreen;
     [SerializeField] private TMP_InputField gameNameInputField;
 
     void OnEnable()
@@ -29,25 +30,21 @@ public class CreateRoomScreen : Screen
             Utils.DebugNullReference("CreateRoomScreen", "lobbyScreen");
         if (waitingRoomScreen == null)
             Utils.DebugNullReference("CreateRoomScreen", "waitingRoomScreen");
+        if (loadingScreen == null)
+            Utils.DebugNullReference("CreateRoomScreen", "loadingScreen");
         if (gameNameInputField == null)
             Utils.DebugNullReference("CreateRoomScreen", "gameNameInputField");
     }
 
-    private void JoinWaitingRoom()
-    {
-        gameData.bIsHost = true;
-        waitingRoomScreen.Enable();
-        Disable();
-    }
+    private void JoinWaitingRoom() => loadingScreen.ScreenTransition(waitingRoomScreen);
 
     public void CreateButtonClicked()
     {
+        gameData.bIsHost = true;
         PhotonManager.Instance.CreateRoom(gameNameInputField.text);
+        gameNameInputField.text = "";
+        ScreenTransition(loadingScreen);
     }
 
-    public void BackButtonClicked()
-    {
-        lobbyScreen.Enable();
-        Disable();
-    }
+    public void BackButtonClicked() => ScreenTransition(lobbyScreen);
 }

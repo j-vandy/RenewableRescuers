@@ -3,9 +3,11 @@ using Photon.Pun;
 using System;
 using Photon.Realtime;
 using System.Collections.Generic;
+using System.Collections;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
+    public const int MAX_PLAYERS = 2;
     public Action OnConnectToMasterAction = null;
     public Action OnJoinedLobbyAction = null;
     public Action OnJoinedRoomAction = null;
@@ -21,6 +23,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         {
             if (_Instance == null)
             {
+                PhotonNetwork.EnableCloseConnection = true;
+                PhotonNetwork.AutomaticallySyncScene = true;
                 GameObject obj = new GameObject("PhotonManager");
                 _Instance = obj.AddComponent<PhotonManager>();
             }
@@ -55,11 +59,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public void CreateRoom(string roomName)
     {
-        PhotonNetwork.CreateRoom(roomName);
+        PhotonNetwork.CreateRoom(roomName, new RoomOptions { MaxPlayers = MAX_PLAYERS });
     }
 
-    public void DestroyRoom()
+    public void CloseRoom()
     {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.CurrentRoom.IsVisible = false;
         foreach (Player player in PhotonNetwork.PlayerList)
             PhotonNetwork.CloseConnection(player);
     }
