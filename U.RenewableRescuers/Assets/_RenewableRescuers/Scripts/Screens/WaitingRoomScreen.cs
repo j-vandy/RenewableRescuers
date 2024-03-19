@@ -6,33 +6,31 @@ using UnityEngine.UI;
 public class WaitingRoomScreen : Screen
 {
     [SerializeField] private GameDataSO gameData;
-    [SerializeField] private Screen lobbyScreen;
-    [SerializeField] private Screen joinRoomScreen;
+    [SerializeField] private Screen loadingScreen;
     [SerializeField] private Toggle toggle;
     [SerializeField] private Button startButton;
 
     private void OnEnable()
     {
+        PhotonManager.Instance.OnJoinedRoomAction += Enable;
         PhotonManager.Instance.OnPlayerEnteredRoomAction += EnableStartButton;
         PhotonManager.Instance.OnPlayerLeftRoomAction += DisableStartButton;
-        PhotonManager.Instance.OnLeftRoomAction += OnLeftRoomLoadScreen;
     }
 
     private void OnDisable()
     {
+        PhotonManager.Instance.OnJoinedRoomAction -= Enable;
+
         PhotonManager.Instance.OnPlayerEnteredRoomAction -= EnableStartButton;
         PhotonManager.Instance.OnPlayerLeftRoomAction -= DisableStartButton;
-        PhotonManager.Instance.OnLeftRoomAction -= OnLeftRoomLoadScreen;
     }
 
     private void Awake()
     {
         if (gameData == null)
             Utils.DebugNullReference("WaitingRoomScreen", "gameData");
-        if (lobbyScreen == null)
-            Utils.DebugNullReference("WaitingRoomScreen", "lobbyScreen");
-        if (joinRoomScreen == null)
-            Utils.DebugNullReference("WaitingRoomScreen", "joinRoomScreen");
+        if (loadingScreen == null)
+            Utils.DebugNullReference("WaitingRoomScreen", "loadingScreen");
         if (toggle == null)
             Utils.DebugNullReference("WaitingRoomScreen", "toggle");
         if (startButton == null)
@@ -49,28 +47,6 @@ public class WaitingRoomScreen : Screen
         startButton.interactable = false;
     }
 
-    private void OnLeftRoomLoadScreen()
-    {
-        if (gameData.bIsHost)
-            lobbyScreen.Enable();
-        else
-            joinRoomScreen.Enable();
-        Disable();
-    }
-
-    public void StartButtonClicked()
-    {
-        PhotonManager.Instance.LoadLevel(Utils.SCENE_RENEWABLE_ENERGY);
-    }
-
-    public void BackButtonClicked()
-    {
-        if (gameData.bIsHost)
-            PhotonManager.Instance.CloseRoom();
-        else
-            PhotonManager.Instance.LeaveRoom();
-    }
-
     public override void Enable()
     {
         foreach (Transform child in transform)
@@ -81,23 +57,39 @@ public class WaitingRoomScreen : Screen
                 continue;
             child.gameObject.SetActive(true);
         }
-        SetPlayerCharacter(toggle.isOn);
-    }
-
-    public override void Disable()
-    {
         if (gameData.bIsHost)
             toggle.isOn = true;
-        base.Disable();
+        else
+            SetPlayerCharacter(toggle.isOn);
     }
 
     public void SetPlayerCharacter(bool IsEcoEddy)
     {
-        gameData.Print();
+        Debug.LogError("NOT IMPLEMENTED CORRECTLY");
+        return;
+
         if (gameData.bIsHost)
             gameData.bIsEddy = IsEcoEddy;
         else
             gameData.bIsEddy = !IsEcoEddy;
-        gameData.Print();
+        //gameData.Print();
+    }
+
+    public void StartButtonClicked()
+    {
+        PhotonManager.Instance.LoadLevel(Utils.SCENE_RENEWABLE_ENERGY);
+    }
+
+    public void BackButtonClicked()
+    {
+        ScreenTransition(loadingScreen);
+
+        if (gameData.bIsHost)
+            PhotonManager.Instance.CloseRoom();
+        else
+            PhotonManager.Instance.LeaveRoom();
+
+        gameData.bIsHost = false;
+        gameData.bIsEddy = false;
     }
 }

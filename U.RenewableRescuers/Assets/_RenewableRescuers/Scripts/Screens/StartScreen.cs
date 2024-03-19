@@ -7,16 +7,6 @@ public class StartScreen : Screen
     [SerializeField] private Screen settingsScreen;
     [SerializeField] private Screen creditsScreen;
 
-    void OnEnable()
-    {
-        PhotonManager.Instance.OnJoinedLobbyAction += LoadLobbyScreen;
-    }
-
-    void OnDisable()
-    {
-        PhotonManager.Instance.OnJoinedLobbyAction -= LoadLobbyScreen;
-    }
-
     void Awake()
     {
         if (loadingScreen == null)
@@ -28,8 +18,6 @@ public class StartScreen : Screen
         if (creditsScreen == null)
             Utils.DebugNullReference("StartScreen", "creditsScreen");
     }
-
-    private void LoadLobbyScreen() => loadingScreen.ScreenTransition(lobbyScreen);
 
     public void StartButtonClicked()
     {

@@ -481,8 +481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameData: {fileID: 11400000, guid: e73852050556e82468d39440d7cb2bb0, type: 2}
-  lobbyScreen: {fileID: 789539760}
-  joinRoomScreen: {fileID: 1600273589}
+  loadingScreen: {fileID: 1898287869}
   toggle: {fileID: 594178867}
   startButton: {fileID: 324458676}
 --- !u!1 &208130244
@@ -1968,6 +1967,8 @@ GameObject:
   m_Component:
   - component: {fileID: 594178866}
   - component: {fileID: 594178867}
+  - component: {fileID: 594178869}
+  - component: {fileID: 594178868}
   m_Layer: 5
   m_Name: EddyToggle
   m_TagString: Untagged
@@ -2043,8 +2044,8 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: EddyToggle, Assembly-CSharp
+      - m_Target: {fileID: 594178868}
+        m_TargetAssemblyTypeName: SyncToggle, Assembly-CSharp
         m_MethodName: OnValueChanged
         m_Mode: 0
         m_Arguments:
@@ -2055,7 +2056,55 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 1
+      - m_Target: {fileID: 196400045}
+        m_TargetAssemblyTypeName: WaitingRoomScreen, Assembly-CSharp
+        m_MethodName: SetPlayerCharacter
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsOn: 0
+--- !u!114 &594178868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594178865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad24a35c653499343ac8b396f29cfb55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggle: {fileID: 594178867}
+  photonView: {fileID: 594178869}
+--- !u!114 &594178869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594178865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &619208998
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2842,6 +2891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8551480d255316e43868a8bb5a2b9812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameData: {fileID: 11400000, guid: e73852050556e82468d39440d7cb2bb0, type: 2}
   startScreen: {fileID: 1192892609}
   createRoomScreen: {fileID: 1501750549}
   joinRoomScreen: {fileID: 1600273589}
@@ -5003,9 +5053,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameData: {fileID: 11400000, guid: e73852050556e82468d39440d7cb2bb0, type: 2}
-  lobbyScreen: {fileID: 789539760}
-  waitingRoomScreen: {fileID: 196400045}
   loadingScreen: {fileID: 1898287869}
+  lobbyScreen: {fileID: 789539760}
   gameNameInputField: {fileID: 542232611}
 --- !u!224 &1503898029 stripped
 RectTransform:
@@ -5470,6 +5519,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c36ee7a0788afcb4a86d73062fbc5ee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameData: {fileID: 11400000, guid: e73852050556e82468d39440d7cb2bb0, type: 2}
+  loadingScreen: {fileID: 1898287869}
   lobbyScreen: {fileID: 789539760}
   roomList: {fileID: 1207663039}
 --- !u!1 &1663177939

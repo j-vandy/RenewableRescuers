@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bIsHost: 0
   bIsEddy: 0
+  bReturnToJoinRoomScreen: 0

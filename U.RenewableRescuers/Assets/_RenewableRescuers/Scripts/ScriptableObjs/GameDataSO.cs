@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
@@ -8,6 +9,13 @@ public class GameDataSO : ScriptableObject
 {
     public bool bIsHost = false;
     public bool bIsEddy = false;
+    public bool bReturnToJoinRoomScreen = false;
+
+    public void ResetValues()
+    {
+        bIsHost = false;
+        bIsEddy = false;
+    }
 
     public void Print()
     {
