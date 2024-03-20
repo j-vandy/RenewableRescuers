@@ -65,14 +65,14 @@ public class WaitingRoomScreen : Screen
 
     public void SetPlayerCharacter(bool IsEcoEddy)
     {
-        Debug.LogError("NOT IMPLEMENTED CORRECTLY");
+        //Debug.LogError("NOT IMPLEMENTED CORRECTLY");
         return;
 
         if (gameData.bIsHost)
             gameData.bIsEddy = IsEcoEddy;
         else
             gameData.bIsEddy = !IsEcoEddy;
-        //gameData.Print();
+        gameData.Print();
     }
 
     public void StartButtonClicked()

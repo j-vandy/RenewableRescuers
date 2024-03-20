@@ -50,7 +50,7 @@ public class JoinRoomScreen : Screen
     {
         gameData.bReturnToJoinRoomScreen = true;
         base.Enable();
-        UpdateRoomList();
+        roomList.UpdateData(PhotonManager.Instance.roomList);
     }
 
     public void TransitionToLoadingScreen() => ScreenTransition(loadingScreen);

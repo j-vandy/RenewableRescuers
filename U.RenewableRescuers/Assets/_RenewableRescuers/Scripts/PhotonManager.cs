@@ -3,13 +3,15 @@ using Photon.Pun;
 using System;
 using Photon.Realtime;
 using System.Collections.Generic;
-using System.Collections;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
+    private const bool DEBUG_ENABLED = true;
+    private bool bHasLeftRoom = false;
     public const int MAX_PLAYERS = 2;
     public Action OnConnectToMasterAction = null;
     public Action OnJoinedLobbyAction = null;
+    public Action OnCreateRoomAction = null;
     public Action OnJoinedRoomAction = null;
     public Action OnLeftRoomAction = null;
     public Action OnRoomListUpdateAction = null;
@@ -31,6 +33,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             return _Instance;
         }
     }
+    
+    private void RefreshRoomList() => PhotonNetwork.GetCustomRoomList(PhotonNetwork.CurrentLobby, null);
 
     public void ConnectUsingSettings()
     {
@@ -44,22 +48,35 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
+        base.OnConnectedToMaster();
         if (OnConnectToMasterAction != null)
             OnConnectToMasterAction();
         PhotonNetwork.JoinLobby();
-        base.OnConnectedToMaster();
+        if (DEBUG_ENABLED)
+            Debug.Log("Connected to Photon servers");
     }
 
     public override void OnJoinedLobby()
     {
+        base.OnJoinedLobby();
         if (OnJoinedLobbyAction != null)
             OnJoinedLobbyAction();
-        base.OnJoinedLobby();
+        if (DEBUG_ENABLED)
+            Debug.Log("Joined lobby");
     }
 
     public void CreateRoom(string roomName)
     {
         PhotonNetwork.CreateRoom(roomName, new RoomOptions { MaxPlayers = MAX_PLAYERS });
+    }
+
+    public override void OnCreatedRoom()
+    {
+        base.OnCreatedRoom();
+        if (OnCreateRoomAction != null)
+            OnCreateRoomAction();
+        if (DEBUG_ENABLED)
+            Debug.Log("Room created successfully");
     }
 
     public void CloseRoom()
@@ -77,9 +94,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        base.OnJoinedRoom();
         if (OnJoinedRoomAction != null)
             OnJoinedRoomAction();
-        base.OnJoinedRoom();
+        if (DEBUG_ENABLED)
+            Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
     }
 
     public void LeaveRoom()
@@ -89,23 +108,32 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
+        base.OnLeftRoom();
         if (OnLeftRoomAction != null)
             OnLeftRoomAction();
-        base.OnLeftRoom();
+
+        bHasLeftRoom = true;
+
+        if (DEBUG_ENABLED)
+            Debug.Log("Left room successfully");
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
+        base.OnPlayerEnteredRoom(newPlayer);
         if (OnPlayerEnteredRoomAction != null)
             OnPlayerEnteredRoomAction();
-        base.OnPlayerEnteredRoom(newPlayer);
+        if (DEBUG_ENABLED)
+            Debug.Log("Player entered room");
     }
 
     public override void OnPlayerLeftRoom(Player newPlayer)
     {
+        base.OnPlayerLeftRoom(newPlayer);
         if (OnPlayerLeftRoomAction != null)
             OnPlayerLeftRoomAction();
-        base.OnPlayerLeftRoom(newPlayer);
+        if (DEBUG_ENABLED)
+            Debug.Log("Player left room");
     }
 
     public void LoadLevel(string levelName)
@@ -120,11 +148,32 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        base.OnRoomListUpdate(roomList);
         this.roomList = roomList;
-
         if (OnRoomListUpdateAction != null)
             OnRoomListUpdateAction();
 
-        base.OnRoomListUpdate(roomList);
+        // refresh room list by rejoining lobby to avoid
+        // setting room list to the previous room you left
+        if (bHasLeftRoom)
+        {
+            Debug.Log("HAS LEFT ROOM ACTIONS");
+            Disconnect();
+            ConnectUsingSettings();
+            bHasLeftRoom = false;
+        }
+
+        if (DEBUG_ENABLED)
+        {
+            Debug.Log("Room List updated");
+            Debug.Log("Size: " + roomList.Count);
+            if (roomList.Count < 1)
+                return;
+            Debug.Log("Rooms:");
+            foreach(var room in roomList)
+            {
+                Debug.Log("      " + room.Name);
+            }
+        }
     }
 }
