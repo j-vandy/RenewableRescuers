@@ -3,16 +3,19 @@ using Photon.Pun;
 using System;
 using Photon.Realtime;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
     private const bool DEBUG_ENABLED = true;
+    private const byte CLOSE_ROOM_EVENT_CODE = 13;
     private bool bHasLeftRoom = false;
     public const int MAX_PLAYERS = 2;
     public Action OnConnectToMasterAction = null;
     public Action OnJoinedLobbyAction = null;
     public Action OnCreateRoomAction = null;
     public Action OnJoinedRoomAction = null;
+    public Action OnCloseRoomEventAction = null;
     public Action OnLeftRoomAction = null;
     public Action OnRoomListUpdateAction = null;
     public Action OnPlayerEnteredRoomAction = null;
@@ -33,8 +36,30 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             return _Instance;
         }
     }
-    
-    private void RefreshRoomList() => PhotonNetwork.GetCustomRoomList(PhotonNetwork.CurrentLobby, null);
+
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        PhotonNetwork.NetworkingClient.EventReceived += OnCloseRoomEvent;
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        PhotonNetwork.NetworkingClient.EventReceived -= OnCloseRoomEvent;
+    }
+
+    private void OnCloseRoomEvent(EventData photonEvent)
+    {
+        byte eventCode = photonEvent.Code;
+        if (eventCode == CLOSE_ROOM_EVENT_CODE)
+        {
+            if (OnCloseRoomEventAction != null)
+                OnCloseRoomEventAction();
+            PhotonNetwork.LeaveRoom();
+        }
+    }
 
     public void ConnectUsingSettings()
     {
@@ -79,14 +104,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             Debug.Log("Room created successfully");
     }
 
-    public void CloseRoom()
-    {
-        PhotonNetwork.CurrentRoom.IsOpen = false;
-        PhotonNetwork.CurrentRoom.IsVisible = false;
-        foreach (Player player in PhotonNetwork.PlayerList)
-            PhotonNetwork.CloseConnection(player);
-    }
-
     public void JoinRoom(string roomName)
     {
         PhotonNetwork.JoinRoom(roomName);
@@ -99,6 +116,15 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             OnJoinedRoomAction();
         if (DEBUG_ENABLED)
             Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
+    }
+
+    public void CloseRoom()
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.CurrentRoom.IsVisible = false;
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(CLOSE_ROOM_EVENT_CODE, null, raiseEventOptions, SendOptions.SendReliable);
+        PhotonNetwork.LeaveRoom();
     }
 
     public void LeaveRoom()

@@ -15,14 +15,15 @@ public class WaitingRoomScreen : Screen
         PhotonManager.Instance.OnJoinedRoomAction += Enable;
         PhotonManager.Instance.OnPlayerEnteredRoomAction += EnableStartButton;
         PhotonManager.Instance.OnPlayerLeftRoomAction += DisableStartButton;
+        PhotonManager.Instance.OnCloseRoomEventAction += CloseRoomEvent;
     }
 
     private void OnDisable()
     {
         PhotonManager.Instance.OnJoinedRoomAction -= Enable;
-
         PhotonManager.Instance.OnPlayerEnteredRoomAction -= EnableStartButton;
         PhotonManager.Instance.OnPlayerLeftRoomAction -= DisableStartButton;
+        PhotonManager.Instance.OnCloseRoomEventAction -= CloseRoomEvent;
     }
 
     private void Awake()
@@ -35,6 +36,16 @@ public class WaitingRoomScreen : Screen
             Utils.DebugNullReference("WaitingRoomScreen", "toggle");
         if (startButton == null)
             Utils.DebugNullReference("WaitingRoomScreen", "startButton");
+    }
+
+    private void CloseRoomEvent()
+    {
+        if (!gameData.bIsHost)
+        {
+            ScreenTransition(loadingScreen);
+            gameData.bIsHost = false;
+            gameData.bIsEddy = false;
+        }    
     }
 
     private void EnableStartButton()
@@ -65,14 +76,10 @@ public class WaitingRoomScreen : Screen
 
     public void SetPlayerCharacter(bool IsEcoEddy)
     {
-        //Debug.LogError("NOT IMPLEMENTED CORRECTLY");
-        return;
-
         if (gameData.bIsHost)
             gameData.bIsEddy = IsEcoEddy;
         else
             gameData.bIsEddy = !IsEcoEddy;
-        gameData.Print();
     }
 
     public void StartButtonClicked()

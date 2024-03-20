@@ -13,8 +13,6 @@ public class SyncToggle : MonoBehaviour
     {
         if (toggle == null)
             Utils.DebugNullReference("SyncToggle", "toggle");
-        if (photonView == null)
-            Utils.DebugNullReference("SyncToggle", "photonView");
     }
 
     public void OnValueChanged(bool value)
@@ -23,9 +21,4 @@ public class SyncToggle : MonoBehaviour
             photonView.RPC("SyncToggleState", RpcTarget.All, value);
     }
 
-    [PunRPC]
-    private void SyncToggleState(bool value)
-    {
-        toggle.isOn = value;
-    }
 }
