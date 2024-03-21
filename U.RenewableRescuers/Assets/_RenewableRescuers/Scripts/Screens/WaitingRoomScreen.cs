@@ -1,5 +1,4 @@
-using System;
-using System.Runtime.CompilerServices;
+using ExitGames.Client.Photon;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +15,7 @@ public class WaitingRoomScreen : Screen
         PhotonManager.Instance.OnPlayerEnteredRoomAction += EnableStartButton;
         PhotonManager.Instance.OnPlayerLeftRoomAction += DisableStartButton;
         PhotonManager.Instance.OnCloseRoomEventAction += CloseRoomEvent;
+        PhotonManager.Instance.OnEventAction += UpdatePlayerValue;
     }
 
     private void OnDisable()
@@ -24,6 +24,7 @@ public class WaitingRoomScreen : Screen
         PhotonManager.Instance.OnPlayerEnteredRoomAction -= EnableStartButton;
         PhotonManager.Instance.OnPlayerLeftRoomAction -= DisableStartButton;
         PhotonManager.Instance.OnCloseRoomEventAction -= CloseRoomEvent;
+        PhotonManager.Instance.OnEventAction += UpdatePlayerValue;
     }
 
     private void Awake()
@@ -71,15 +72,24 @@ public class WaitingRoomScreen : Screen
         if (gameData.bIsHost)
             toggle.isOn = true;
         else
-            SetPlayerCharacter(toggle.isOn);
+            gameData.bIsEddy = !toggle.isOn;
     }
 
-    public void SetPlayerCharacter(bool IsEcoEddy)
+    public void OnToggleValueChanged()
     {
+        PhotonManager.Instance.RaiseEventAll(PhotonManager.EVENT_CODE_EDDY_TOGGLE, null);
+    }
+
+    public void UpdatePlayerValue(EventData eventData)
+    {
+        if (eventData.Code != PhotonManager.EVENT_CODE_EDDY_TOGGLE)
+            return;
+
         if (gameData.bIsHost)
-            gameData.bIsEddy = IsEcoEddy;
+            gameData.bIsEddy = toggle.isOn;
         else
-            gameData.bIsEddy = !IsEcoEddy;
+            gameData.bIsEddy = !toggle.isOn;
+        Debug.LogError("IsEddy: " + gameData.bIsEddy);
     }
 
     public void StartButtonClicked()

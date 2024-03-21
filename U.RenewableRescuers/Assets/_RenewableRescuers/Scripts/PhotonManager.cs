@@ -8,9 +8,11 @@ using ExitGames.Client.Photon;
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
     private const bool DEBUG_ENABLED = true;
-    private const byte CLOSE_ROOM_EVENT_CODE = 13;
     private bool bHasLeftRoom = false;
     public const int MAX_PLAYERS = 2;
+    public const byte EVENT_CODE_CLOSE_ROOM = 1;
+    public const byte EVENT_CODE_EDDY_TOGGLE = 2;
+    public Action<EventData> OnEventAction = null;
     public Action OnConnectToMasterAction = null;
     public Action OnJoinedLobbyAction = null;
     public Action OnCreateRoomAction = null;
@@ -37,23 +39,26 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         }
     }
 
-
     public override void OnEnable()
     {
         base.OnEnable();
-        PhotonNetwork.NetworkingClient.EventReceived += OnCloseRoomEvent;
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
     }
 
     public override void OnDisable()
     {
         base.OnDisable();
-        PhotonNetwork.NetworkingClient.EventReceived -= OnCloseRoomEvent;
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
     }
 
-    private void OnCloseRoomEvent(EventData photonEvent)
+    private void OnEvent(EventData photonEvent)
     {
-        byte eventCode = photonEvent.Code;
-        if (eventCode == CLOSE_ROOM_EVENT_CODE)
+        // used to call events
+        if (OnEventAction != null)
+            OnEventAction(photonEvent);
+        
+        // on room close
+        if (photonEvent.Code == EVENT_CODE_CLOSE_ROOM)
         {
             if (OnCloseRoomEventAction != null)
                 OnCloseRoomEventAction();
@@ -61,15 +66,12 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void ConnectUsingSettings()
-    {
-        PhotonNetwork.ConnectUsingSettings();
-    }
+    public void RaiseEventOthers(byte eventCode, object eventContent) => PhotonNetwork.RaiseEvent(eventCode, eventContent, new RaiseEventOptions { Receivers = ReceiverGroup.Others }, SendOptions.SendReliable);
+    public void RaiseEventAll(byte eventCode, object eventContent) => PhotonNetwork.RaiseEvent(eventCode, eventContent, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
 
-    public void Disconnect()
-    {
-        PhotonNetwork.Disconnect();
-    }
+    public void ConnectUsingSettings() => PhotonNetwork.ConnectUsingSettings();
+
+    public void Disconnect() => PhotonNetwork.Disconnect();
 
     public override void OnConnectedToMaster()
     {
@@ -90,10 +92,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             Debug.Log("Joined lobby");
     }
 
-    public void CreateRoom(string roomName)
-    {
-        PhotonNetwork.CreateRoom(roomName, new RoomOptions { MaxPlayers = MAX_PLAYERS });
-    }
+    public void CreateRoom(string roomName) => PhotonNetwork.CreateRoom(roomName, new RoomOptions { MaxPlayers = MAX_PLAYERS });
 
     public override void OnCreatedRoom()
     {
@@ -104,10 +103,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             Debug.Log("Room created successfully");
     }
 
-    public void JoinRoom(string roomName)
-    {
-        PhotonNetwork.JoinRoom(roomName);
-    }
+    public void JoinRoom(string roomName) => PhotonNetwork.JoinRoom(roomName);
 
     public override void OnJoinedRoom()
     {
@@ -123,14 +119,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-        PhotonNetwork.RaiseEvent(CLOSE_ROOM_EVENT_CODE, null, raiseEventOptions, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent(EVENT_CODE_CLOSE_ROOM, null, raiseEventOptions, SendOptions.SendReliable);
         PhotonNetwork.LeaveRoom();
     }
 
-    public void LeaveRoom()
-    {
-        PhotonNetwork.LeaveRoom();
-    }
+    public void LeaveRoom() => PhotonNetwork.LeaveRoom();
 
     public override void OnLeftRoom()
     {
@@ -162,15 +155,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             Debug.Log("Player left room");
     }
 
-    public void LoadLevel(string levelName)
-    {
-        PhotonNetwork.LoadLevel(levelName);
-    }
+    public void LoadLevel(string levelName) => PhotonNetwork.LoadLevel(levelName);
 
-    public void Instantiate(string prefabName, Vector3 position, Quaternion rotation)
-    {
-        PhotonNetwork.Instantiate(prefabName, position, rotation);
-    }
+    public void Instantiate(string prefabName, Vector3 position, Quaternion rotation) => PhotonNetwork.Instantiate(prefabName, position, rotation);
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {

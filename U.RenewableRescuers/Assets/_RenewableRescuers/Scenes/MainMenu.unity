@@ -1967,7 +1967,6 @@ GameObject:
   m_Component:
   - component: {fileID: 594178866}
   - component: {fileID: 594178867}
-  - component: {fileID: 594178868}
   m_Layer: 5
   m_Name: EddyToggle
   m_TagString: Untagged
@@ -2043,22 +2042,10 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 594178868}
-        m_TargetAssemblyTypeName: SyncToggle, Assembly-CSharp
-        m_MethodName: OnValueChanged
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 196400045}
         m_TargetAssemblyTypeName: WaitingRoomScreen, Assembly-CSharp
-        m_MethodName: SetPlayerCharacter
-        m_Mode: 0
+        m_MethodName: OnToggleValueChanged
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2068,20 +2055,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsOn: 0
---- !u!114 &594178868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 594178865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad24a35c653499343ac8b396f29cfb55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toggle: {fileID: 594178867}
-  photonView: {fileID: 0}
 --- !u!1001 &619208998
 PrefabInstance:
   m_ObjectHideFlags: 0
