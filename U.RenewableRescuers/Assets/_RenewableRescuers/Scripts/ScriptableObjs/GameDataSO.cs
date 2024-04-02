@@ -15,11 +15,13 @@ public class GameDataSO : ScriptableObject
     {
         bIsHost = false;
         bIsEddy = false;
+        bReturnToJoinRoomScreen = false;
     }
 
     public void Print()
     {
         Debug.LogError("bIsHost: " + bIsHost);
         Debug.LogError("bIsEddy: " + bIsEddy);
+        Debug.LogError("bReturnToJoinRoomScreen: " + bReturnToJoinRoomScreen);
     }
 }

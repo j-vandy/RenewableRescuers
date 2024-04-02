@@ -56,7 +56,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         // used to call events
         if (OnEventAction != null)
             OnEventAction(photonEvent);
-        
+
         // on room close
         if (photonEvent.Code == EVENT_CODE_CLOSE_ROOM)
         {

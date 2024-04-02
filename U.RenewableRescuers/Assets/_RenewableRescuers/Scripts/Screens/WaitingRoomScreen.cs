@@ -12,7 +12,7 @@ public class WaitingRoomScreen : Screen
     private void OnEnable()
     {
         PhotonManager.Instance.OnJoinedRoomAction += Enable;
-        PhotonManager.Instance.OnPlayerEnteredRoomAction += EnableStartButton;
+        PhotonManager.Instance.OnPlayerEnteredRoomAction += PlayerEnteredRoomAction;
         PhotonManager.Instance.OnPlayerLeftRoomAction += DisableStartButton;
         PhotonManager.Instance.OnCloseRoomEventAction += CloseRoomEvent;
         PhotonManager.Instance.OnEventAction += UpdatePlayerValue;
@@ -21,7 +21,7 @@ public class WaitingRoomScreen : Screen
     private void OnDisable()
     {
         PhotonManager.Instance.OnJoinedRoomAction -= Enable;
-        PhotonManager.Instance.OnPlayerEnteredRoomAction -= EnableStartButton;
+        PhotonManager.Instance.OnPlayerEnteredRoomAction -= PlayerEnteredRoomAction;
         PhotonManager.Instance.OnPlayerLeftRoomAction -= DisableStartButton;
         PhotonManager.Instance.OnCloseRoomEventAction -= CloseRoomEvent;
         PhotonManager.Instance.OnEventAction += UpdatePlayerValue;
@@ -49,8 +49,10 @@ public class WaitingRoomScreen : Screen
         }    
     }
 
-    private void EnableStartButton()
+    private void PlayerEnteredRoomAction()
     {
+        if (gameData.bIsHost)
+            OnToggleValueChanged();
         startButton.interactable = true;
     }
 
@@ -71,25 +73,24 @@ public class WaitingRoomScreen : Screen
         }
         if (gameData.bIsHost)
             toggle.isOn = true;
-        else
-            gameData.bIsEddy = !toggle.isOn;
     }
 
     public void OnToggleValueChanged()
     {
-        PhotonManager.Instance.RaiseEventAll(PhotonManager.EVENT_CODE_EDDY_TOGGLE, null);
+        object eventContent = toggle.isOn;
+        PhotonManager.Instance.RaiseEventAll(PhotonManager.EVENT_CODE_EDDY_TOGGLE, eventContent);
     }
 
     public void UpdatePlayerValue(EventData eventData)
     {
         if (eventData.Code != PhotonManager.EVENT_CODE_EDDY_TOGGLE)
             return;
-
+        
+        bool toggleValue = (bool)eventData.CustomData;
         if (gameData.bIsHost)
-            gameData.bIsEddy = toggle.isOn;
+            gameData.bIsEddy = toggleValue;
         else
-            gameData.bIsEddy = !toggle.isOn;
-        Debug.LogError("IsEddy: " + gameData.bIsEddy);
+            gameData.bIsEddy = !toggleValue;
     }
 
     public void StartButtonClicked()
