@@ -13,4 +13,9 @@ public class Utils
     {
         Debug.LogError("ERROR@" + script + ": reference to '" + variable + "' is null.");
     }
+
+    public static float easeOutCubic(float t)
+    {
+        return 1 - Mathf.Pow(1 - t, 3);
+    }
 }
