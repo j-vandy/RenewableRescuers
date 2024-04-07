@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class SettingsScreen : Screen
 {
@@ -6,7 +7,7 @@ public class SettingsScreen : Screen
     private void Awake()
     {
         if (startScreen == null)
-            Utils.DebugNullReference("SettingsScreen", "startScreen");
+            throw new NullReferenceException();
     }
 
     public void BackButtonClicked() => ScreenTransition(startScreen);

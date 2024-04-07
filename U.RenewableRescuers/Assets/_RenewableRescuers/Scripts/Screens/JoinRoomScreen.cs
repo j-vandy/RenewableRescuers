@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class JoinRoomScreen : Screen
 {
@@ -21,13 +22,13 @@ public class JoinRoomScreen : Screen
     private void Awake()
     {
         if (gameData == null)
-            Utils.DebugNullReference("JoinRoomScreen", "gameData");
+            throw new NullReferenceException();
         if (loadingScreen == null)
-            Utils.DebugNullReference("JoinRoomScreen", "loadingScreen");
+            throw new NullReferenceException();
         if (lobbyScreen == null)
-            Utils.DebugNullReference("JoinRoomScreen", "lobbyScreen");
+            throw new NullReferenceException();
         if (roomList == null)
-            Utils.DebugNullReference("JoinRoomScreen", "roomList");
+            throw new NullReferenceException();
     }
 
     private void JoinedLobbyAction()

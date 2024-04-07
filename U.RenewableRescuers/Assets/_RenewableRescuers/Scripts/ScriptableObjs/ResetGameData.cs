@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ResetGameData : MonoBehaviour
 {
@@ -8,7 +7,7 @@ public class ResetGameData : MonoBehaviour
     private void Start()
     {
         if (gameData == null)
-            Utils.DebugNullReference("ResetGameData", "gameData");
+            throw new NullReferenceException();
        gameData.ResetValues(); 
     }
 }

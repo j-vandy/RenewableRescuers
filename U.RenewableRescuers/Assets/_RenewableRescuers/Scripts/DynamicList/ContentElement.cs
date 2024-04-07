@@ -1,7 +1,5 @@
 using Photon.Realtime;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System;
 using UnityEngine;
 using TMPro;
 
@@ -16,9 +14,9 @@ public class ContentElement : MonoBehaviour
     {
         
         if (playerCountText == null)
-            Utils.DebugNullReference("ContentElement", "playerCountText");
+            throw new NullReferenceException();
         if (roomNameText == null)
-            Utils.DebugNullReference("ContentElement", "roomNameText");
+            throw new NullReferenceException();
     }
 
     public void Set(RoomInfo roomInfo)
@@ -28,7 +26,7 @@ public class ContentElement : MonoBehaviour
         roomNameText.text = roomInfo.Name;
         joinRoomScreen = transform.parent.parent.parent.GetComponent<JoinRoomScreen>();
         if (joinRoomScreen == null)
-            Utils.DebugNullReference("ContentElement", "joinRoomScreen");
+            throw new NullReferenceException();
     }
 
     public void OnJoinButtonPressed()

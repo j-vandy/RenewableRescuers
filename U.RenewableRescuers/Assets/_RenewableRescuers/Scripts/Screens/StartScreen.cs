@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class StartScreen : Screen
 {
@@ -10,13 +11,13 @@ public class StartScreen : Screen
     void Awake()
     {
         if (loadingScreen == null)
-            Utils.DebugNullReference("StartScreen", "loadingScreen");
+            throw new NullReferenceException();
         if (lobbyScreen == null)
-            Utils.DebugNullReference("StartScreen", "lobbyScreen");
+            throw new NullReferenceException();
         if (settingsScreen == null)
-            Utils.DebugNullReference("StartScreen", "settingsScreen");
+            throw new NullReferenceException();
         if (creditsScreen == null)
-            Utils.DebugNullReference("StartScreen", "creditsScreen");
+            throw new NullReferenceException();
     }
 
     public void StartButtonClicked()

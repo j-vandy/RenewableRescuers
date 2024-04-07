@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class CreditsScreen : Screen
 {
@@ -6,7 +7,7 @@ public class CreditsScreen : Screen
     private void Awake()
     {
         if (startScreen == null)
-            Utils.DebugNullReference("CreditsScreen", "startScreen");
+            throw new NullReferenceException();
     }
 
     public void BackButtonClicked() => ScreenTransition(startScreen);

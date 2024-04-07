@@ -1,7 +1,7 @@
 using Photon.Pun;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
+using System;
 
 public class SpawnPlayers : MonoBehaviour
 {
@@ -13,11 +13,11 @@ public class SpawnPlayers : MonoBehaviour
     private void OnEnable()
     {
         if (gameData == null)
-            Utils.DebugNullReference("SpawnPlayer", "gameData");
+            throw new NullReferenceException();
         if (ecoEddyPrefab == null)
-            Utils.DebugNullReference("SpawnPlayer", "ecoEddyPrefab");
+            throw new NullReferenceException();
         if (solarSamPrefab == null)
-            Utils.DebugNullReference("SpawnPlayer", "solarSamPrefab");
+            throw new NullReferenceException();
 
         StartCoroutine(InstantiatePlayer());
     }

@@ -9,11 +9,6 @@ public class Utils
     public const string INPUT_BUTTON_JUMP = "Jump";
     public const string LAYER_PLAYER = "Player";
 
-    public static void DebugNullReference(string script, string variable)
-    {
-        Debug.LogError("ERROR@" + script + ": reference to '" + variable + "' is null.");
-    }
-
     public static float easeOutCubic(float t)
     {
         return 1 - Mathf.Pow(1 - t, 3);

@@ -1,6 +1,7 @@
 using ExitGames.Client.Photon;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class WaitingRoomScreen : Screen
 {
@@ -30,13 +31,13 @@ public class WaitingRoomScreen : Screen
     private void Awake()
     {
         if (gameData == null)
-            Utils.DebugNullReference("WaitingRoomScreen", "gameData");
+            throw new NullReferenceException();
         if (loadingScreen == null)
-            Utils.DebugNullReference("WaitingRoomScreen", "loadingScreen");
+            throw new NullReferenceException();
         if (toggle == null)
-            Utils.DebugNullReference("WaitingRoomScreen", "toggle");
+            throw new NullReferenceException();
         if (startButton == null)
-            Utils.DebugNullReference("WaitingRoomScreen", "startButton");
+            throw new NullReferenceException();
     }
 
     private void CloseRoomEvent()

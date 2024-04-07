@@ -1,7 +1,7 @@
 using Photon.Realtime;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class DynamicList : MonoBehaviour
 {
@@ -10,13 +10,9 @@ public class DynamicList : MonoBehaviour
     private void Awake()
     {
         if (contentElementPrefab == null)
-        {
-            Utils.DebugNullReference("DynamicList", "contentElementPrefab");
-        }
+            throw new NullReferenceException();
         if (content == null)
-        {
-            Utils.DebugNullReference("DynamicList", "content");
-        }
+            throw new NullReferenceException();
     }
 
     private void ClearList()

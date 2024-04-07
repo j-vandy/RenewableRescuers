@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using System;
 
 public class CreateRoomScreen : Screen
 {
@@ -11,13 +12,13 @@ public class CreateRoomScreen : Screen
     void Awake()
     {
         if (gameData == null)
-            Utils.DebugNullReference("CreateRoomScreen", "gameData");
+            throw new NullReferenceException();
         if (loadingScreen == null)
-            Utils.DebugNullReference("CreateRoomScreen", "loadingScreen");
+            throw new NullReferenceException();
         if (lobbyScreen == null)
-            Utils.DebugNullReference("CreateRoomScreen", "lobbyScreen");
+            throw new NullReferenceException();
         if (gameNameInputField == null)
-            Utils.DebugNullReference("CreateRoomScreen", "gameNameInputField");
+            throw new NullReferenceException();
     }
 
     public void CreateButtonClicked()
