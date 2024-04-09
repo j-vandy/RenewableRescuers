@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class OFFLINE_PlayerMovement : MonoBehaviour
 {
-    private const float RAYCAST_DIST = 1.1f; // ensure RAY_DIST is greater than capsule collider
+    private const float RAYCAST_DIST = 0.6f; // ensure RAY_DIST is greater than capsule collider
     private const float MOVEMENT_SPEED = 5f;
     private const float JUMP_FORCE = 350f;
     private Rigidbody2D _rigidbody;
-    public bool bUsesArrows = false;
+    [SerializeField] private bool bUsesArrows = false;
+    public static Action OnRestart;
 
     private void Start()
     {
@@ -19,9 +20,16 @@ public class OFFLINE_PlayerMovement : MonoBehaviour
     private void Update()
     {
         // vertical movement
-        bool keyDown = bUsesArrows ? Input.GetKeyDown(KeyCode.UpArrow) : Input.GetKeyDown(KeyCode.W);
-        if (keyDown && IsGrounded())
+        bool movementKeyDown = bUsesArrows ? Input.GetKeyDown(KeyCode.UpArrow) : Input.GetKeyDown(KeyCode.W);
+        if (movementKeyDown && IsGrounded())
             _rigidbody.AddForce(Vector2.up * JUMP_FORCE);
+
+        // check if restart was pressed
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (OnRestart != null)
+                OnRestart();
+        }
     }
 
     private void FixedUpdate()

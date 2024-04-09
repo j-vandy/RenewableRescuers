@@ -1,5 +1,5 @@
 using System;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Lever : MonoBehaviour
@@ -9,8 +9,9 @@ public class Lever : MonoBehaviour
     private const float OFF_MAX_ANGLE = 90;
     private const float OFF_MIN_ANGLE = 35;
     [SerializeField] private Transform arm;
-    public bool bIsOff = false;
-    public bool bIsOn = false;
+    [SerializeField] private List<float> connections;
+    [HideInInspector] public bool bIsOff = false;
+    [HideInInspector] public bool bIsOn = false;
     public Action OnLeverTurnedOn;
     public Action OnLeverTurnedOff;
 
