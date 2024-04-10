@@ -9,18 +9,17 @@ public class Lever : MonoBehaviour
     private const float OFF_MAX_ANGLE = 90;
     private const float OFF_MIN_ANGLE = 35;
     [SerializeField] private Transform arm;
-    [SerializeField] private List<float> connections;
+    [SerializeField] private List<Powerable> connections = new List<Powerable>();
     [HideInInspector] public bool bIsOff = false;
     [HideInInspector] public bool bIsOn = false;
-    public Action OnLeverTurnedOn;
-    public Action OnLeverTurnedOff;
-
     public SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
         if (arm == null)
             throw new NullReferenceException();
+        if (connections.Count <= 0)
+            Debug.LogWarning("Lever has no connections");
     }
 
     private void Update()
@@ -31,8 +30,8 @@ public class Lever : MonoBehaviour
         {
             bIsOn = true;
             bIsOff = false;
-            if (OnLeverTurnedOn != null)
-                OnLeverTurnedOn();
+            foreach (var connection in connections)
+                connection.PowerOn();
 
             spriteRenderer.color = Color.green;
         }
@@ -40,8 +39,8 @@ public class Lever : MonoBehaviour
         {
             bIsOff = true;
             bIsOn = false;
-            if (OnLeverTurnedOff != null)
-                OnLeverTurnedOff();
+            foreach (var connection in connections)
+                connection.PowerOff();
 
             spriteRenderer.color = Color.red;
         }
