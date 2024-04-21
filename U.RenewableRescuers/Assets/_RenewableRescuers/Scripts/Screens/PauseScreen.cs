@@ -1,15 +1,16 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 
-public class StartScreen : Screen
+public class PauseScreen : Screen
 {
-    [SerializeField] private Screen gameSelectScreen;
+    [SerializeField] private PauseScreenController controller;
     [SerializeField] private Screen settingsScreen;
     [SerializeField] private Screen creditsScreen;
 
     void Awake()
     {
-        if (gameSelectScreen == null)
+        if (controller == null)
             throw new NullReferenceException();
         if (settingsScreen == null)
             throw new NullReferenceException();
@@ -17,18 +18,15 @@ public class StartScreen : Screen
             throw new NullReferenceException();
     }
 
-    public void StartButtonClicked() => ScreenTransition(gameSelectScreen);
+    public void ResumeButtonClicked()
+    {
+        controller.bIsEnabled = false;
+        Disable();
+    }
 
     public void SettingsButtonClicked() => ScreenTransition(settingsScreen);
 
     public void CreditsButtonClicked() => ScreenTransition(creditsScreen);
 
-    public void QuitButtonClicked()
-    {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            Application.Quit();
-        #endif
-    }
+    public void QuitButtonClicked() => SceneManager.LoadScene(Utils.SCENE_MAIN_MENU);
 }
