@@ -5,7 +5,6 @@ public class PauseScreenController : MonoBehaviour
 {
     [SerializeField] private Screen pauseScreen;
     [SerializeField] private Screen settingsScreen;
-    [SerializeField] private Screen creditsScreen;
     public bool bIsEnabled = false;
 
     private void Start()
@@ -13,8 +12,6 @@ public class PauseScreenController : MonoBehaviour
         if (pauseScreen == null)
             throw new NullReferenceException();
          if (settingsScreen == null)
-            throw new NullReferenceException();
-        if (creditsScreen == null)
             throw new NullReferenceException();
     }
 
@@ -27,7 +24,6 @@ public class PauseScreenController : MonoBehaviour
             {
                 pauseScreen.Disable();
                 settingsScreen.Disable();
-                creditsScreen.Disable();
             }
             else
             {

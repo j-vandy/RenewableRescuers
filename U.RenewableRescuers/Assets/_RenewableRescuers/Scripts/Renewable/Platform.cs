@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
-using System.Security.Cryptography;
-using Unity.VisualScripting.Dependencies.Sqlite;
-using Unity.VisualScripting;
 
 public class Platform : Powerable
 {

@@ -1,48 +1,89 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using NaughtyAttributes;
+using System.Runtime.CompilerServices;
 
 public class Lever : MonoBehaviour
 {
-    private const float ON_MAX_ANGLE = 325;
-    private const float ON_MIN_ANGLE = 270;
-    private const float OFF_MAX_ANGLE = 90;
-    private const float OFF_MIN_ANGLE = 35;
-    [SerializeField] private Transform arm;
+    private Animator animator;
+    private string currAnimationState;
+    private bool bIsOn = false;
+    [SerializeField] private bool bIsLocked = true;
+    [ShowIf("bIsLocked")]
+    [SerializeField] private GameObject leverQuestion;
     [SerializeField] private List<Powerable> connections = new List<Powerable>();
-    [HideInInspector] public bool bIsOff = false;
-    [HideInInspector] public bool bIsOn = false;
-    public SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
-        if (arm == null)
+        animator = GetComponent<Animator>();
+        if (animator == null)
+            throw new NullReferenceException();
+        if (bIsLocked && leverQuestion == null)
             throw new NullReferenceException();
         if (connections.Count <= 0)
             Debug.LogWarning("Lever has no connections");
+
+        // set "animation" to locked or unlocked
+        if (bIsLocked)
+            ChangeAnimationState(Utils.ANIMATION_LEVER_LOCKED);
+        else
+            ChangeAnimationState(Utils.ANIMATION_LEVER_UNLOCKED);
     }
 
-    private void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        float rot = arm.eulerAngles.z;
-
-        if (ON_MIN_ANGLE < rot && rot < ON_MAX_ANGLE && !bIsOn)
+        if (collision.tag == "Player")
         {
-            bIsOn = true;
-            bIsOff = false;
-            foreach (var connection in connections)
+            if (bIsLocked)
+                leverQuestion.SetActive(true);
+            else
+                Toggle();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+            if (bIsLocked)
+                leverQuestion.SetActive(false);
+        }
+    }
+
+    private void ChangeAnimationState(string newAnimationState)
+    {
+        if (currAnimationState == newAnimationState)
+            return;
+
+        animator.Play(newAnimationState);
+        currAnimationState = newAnimationState;
+    }
+
+    private void Toggle()
+    {
+        // toggle the switch state
+        bIsOn = !bIsOn;
+
+        // change animation states
+        if (bIsOn)
+            ChangeAnimationState(Utils.ANIMATION_LEVER_TOGGLE_ON);
+        else 
+            ChangeAnimationState(Utils.ANIMATION_LEVER_TOGGLE_OFF);
+
+        // power on/off connections
+        foreach (var connection in connections)
+        {
+            if (bIsOn)
                 connection.PowerOn();
-
-            spriteRenderer.color = Color.green;
-        }
-        if (OFF_MIN_ANGLE < rot && rot < OFF_MAX_ANGLE && !bIsOff)
-        {
-            bIsOff = true;
-            bIsOn = false;
-            foreach (var connection in connections)
+            else
                 connection.PowerOff();
-
-            spriteRenderer.color = Color.red;
         }
+    }
+
+    public void Unlock()
+    {
+        bIsLocked = false;
+        Toggle();
     }
 }
