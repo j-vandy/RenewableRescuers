@@ -24,10 +24,12 @@ public class PauseScreenController : MonoBehaviour
             {
                 pauseScreen.Disable();
                 settingsScreen.Disable();
+                Utils.UnfreezeTime();
             }
             else
             {
                 pauseScreen.Enable();
+                Utils.FreezeTime();
             }
             bIsEnabled = !bIsEnabled;
         }
@@ -35,6 +37,7 @@ public class PauseScreenController : MonoBehaviour
 
     public void PauseButtonClicked()
     {
+        Utils.FreezeTime();
         bIsEnabled = true;
         pauseScreen.Enable();
     }

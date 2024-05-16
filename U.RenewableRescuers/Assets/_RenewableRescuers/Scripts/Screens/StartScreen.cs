@@ -1,23 +1,21 @@
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class StartScreen : Screen
 {
-    [SerializeField] private Screen gameSelectScreen;
     [SerializeField] private Screen settingsScreen;
     [SerializeField] private Screen creditsScreen;
 
     void Awake()
     {
-        if (gameSelectScreen == null)
-            throw new NullReferenceException();
         if (settingsScreen == null)
             throw new NullReferenceException();
         if (creditsScreen == null)
             throw new NullReferenceException();
     }
 
-    public void StartButtonClicked() => ScreenTransition(gameSelectScreen);
+    public void StartButtonClicked() => SceneManager.LoadScene(Utils.SCENE_RENEWABLE_ENERGY);
 
     public void SettingsButtonClicked() => ScreenTransition(settingsScreen);
 

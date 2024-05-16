@@ -18,6 +18,7 @@ public class PauseScreen : Screen
     public void ResumeButtonClicked()
     {
         controller.bIsEnabled = false;
+        Utils.UnfreezeTime();
         Disable();
     }
 

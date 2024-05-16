@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 previous_pos;
     private Rigidbody2D _rigidbody;
     private PlayerAnimationController _animationController;
-    public static Action OnRestart;
+    public bool bCanMove = true;
     public static Action OnPlayerJump;
     public static Action OnPlayerLand;
 
@@ -38,13 +38,6 @@ public class PlayerController : MonoBehaviour
             if (OnPlayerJump != null)
                 OnPlayerJump();
             _rigidbody.AddForce(Vector2.up * JUMP_FORCE);
-        }
-
-        // reset the game on reset pressed
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            if (OnRestart != null)
-                OnRestart();
         }
     }
 
