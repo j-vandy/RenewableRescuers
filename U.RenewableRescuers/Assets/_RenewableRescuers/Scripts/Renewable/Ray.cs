@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Ray : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class Ray : MonoBehaviour
         {
             // end level if ray meets renewable target
             if (hit.transform.tag == Utils.TAG_RENEWABLE_TARGET)
-                Debug.Log("WINNER");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
 
             // update ray render
             float dist = Mathf.Abs(transform.position.x - hit.point.x);

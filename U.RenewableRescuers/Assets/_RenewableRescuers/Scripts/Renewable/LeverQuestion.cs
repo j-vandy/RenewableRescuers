@@ -12,6 +12,8 @@ public class LeverQuestion : MonoBehaviour
     private ButtonToggle selectedAnswer = null;
     [SerializeField] private Lever lever;
     [SerializeField] private GameObject errorMessage;
+    [SerializeField] private GameObject correctMessage;
+    [SerializeField] private SoundFX_Manager soundfx_manager;
     [SerializeField] private ButtonToggle a;
     [SerializeField] private ButtonToggle b;
     [SerializeField] private ButtonToggle c;
@@ -37,10 +39,19 @@ public class LeverQuestion : MonoBehaviour
         if (selectedAnswer.answer != answer)
         {
             Instantiate(errorMessage, Vector3.zero, Quaternion.identity);
-            // play an error message audio
+            soundfx_manager.PlayWrong();
             return;
         }
+        else
+        {
+            Delete d = Instantiate(correctMessage, Vector3.zero, Quaternion.identity).GetComponent<Delete>();
+            d.leverQuestion = this;
+            soundfx_manager.PlayCorrect();
+        }
+    }
 
+    public void Close()
+    {
         // unlock the lever
         lever.Unlock();
         gameObject.SetActive(false);
@@ -48,6 +59,7 @@ public class LeverQuestion : MonoBehaviour
 
     private void SetSelection(ButtonToggle selected)
     {
+        soundfx_manager.PlayUI();
         if (selectedAnswer == null)
         {
             selectedAnswer = selected;
@@ -60,7 +72,6 @@ public class LeverQuestion : MonoBehaviour
 
         selectedAnswer.ToggleOff();
         selectedAnswer = selected;
-        // probably add a sound effect
     }
 
     public void OnAnswerAClicked() => SetSelection(a);

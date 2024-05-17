@@ -1,27 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
+using System;
 using UnityEngine;
 
 [CreateAssetMenu]
 public class GameDataSO : ScriptableObject
 {
-    public bool bIsHost = false;
-    public bool bIsEddy = false;
-    public bool bReturnToJoinRoomScreen = false;
+    public bool bIsMobileDevice = false;
+    public bool bMobileUIEnabled = false;
+    public float time = 0f;
 
-    public void ResetValues()
+    public Action OnMusicChanged = null;
+    private float _music = 1f;
+    public float music
     {
-        bIsHost = false;
-        bIsEddy = false;
-        bReturnToJoinRoomScreen = false;
+        get { return _music; }
+        set {
+            _music = value;
+            if (OnMusicChanged != null)
+                OnMusicChanged();
+        }
     }
 
-    public void Print()
+    public Action OnSoundFXChanged = null;
+    private float _soundfx = 1f;
+    public float soundfx
     {
-        Debug.LogError("bIsHost: " + bIsHost);
-        Debug.LogError("bIsEddy: " + bIsEddy);
-        Debug.LogError("bReturnToJoinRoomScreen: " + bReturnToJoinRoomScreen);
+        get { return _soundfx; }
+        set {
+            _soundfx = value;
+            if (OnSoundFXChanged != null)
+                OnSoundFXChanged();
+        }
     }
 }

@@ -12,9 +12,6 @@ EditorBuildSettings:
     path: Assets/_RenewableRescuers/Scenes/RenewableEnergy.unity
     guid: 5ba817c79fea0e2429b02b5034252a1e
   - enabled: 1
-    path: Assets/_RenewableRescuers/Scenes/NetZero.unity
-    guid: 99f3439faa66cbe47989e9001649380f
-  - enabled: 1
-    path: Assets/_RenewableRescuers/Scenes/Infill.unity
-    guid: 548e12107192f99468a48a591d772941
+    path: Assets/_RenewableRescuers/Scenes/Winner.unity
+    guid: e94aed61c897fcd448e1bf0cb3baef84
   m_configObjects: {}

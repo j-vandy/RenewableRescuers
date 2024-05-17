@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     private float RAYCAST_DIST = 0.64f; // ensure RAY_DIST is greater than capsule collider
     private const float MOVEMENT_SPEED = 5f;
-    private const float JUMP_FORCE = 350f;
+    private const float JUMP_FORCE = 375f;
     private const float JUMP_TIME_BUFFER_DURATION = 0.1f;
     private float jumpTime = 0;
     private bool bIsJumping = false;
@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     public bool bCanMove = true;
     public static Action OnPlayerJump;
     public static Action OnPlayerLand;
+    public SoundFX_Manager soundfx;
+    [SerializeField] private MobileController mobileController;
+    [SerializeField] private GameDataSO gameData;
 
     private void Start()
     {
@@ -25,14 +28,24 @@ public class PlayerController : MonoBehaviour
         if (_animationController == null)
             throw new NullReferenceException();
         previous_pos = transform.position;
+        if (mobileController == null)
+            throw new NullReferenceException();
+        if (gameData == null)
+            throw new NullReferenceException();
     }
 
     private void Update()
     {
         // vertical movement
-        bool bMovementKeyDown = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W);
+        bool bMovementKeyDown;
+        if (gameData.bMobileUIEnabled)
+            bMovementKeyDown = mobileController.jump_key_is_down;
+        else 
+            bMovementKeyDown = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space);
+
         if (bMovementKeyDown && !bIsJumping)
         {
+            soundfx.PlayPlayerJump();
             bIsJumping = true;
             jumpTime = Time.time;
             if (OnPlayerJump != null)
@@ -55,7 +68,12 @@ public class PlayerController : MonoBehaviour
         _animationController.UpdateAnimation(curr_velocity.x, curr_velocity.y, bIsJumping);
 
         // horizontal movement
-        float input = Input.GetAxis(Utils.INPUT_AXIS_HORIZONTAL);
+        float input;
+        Debug.Log(gameData.bMobileUIEnabled);
+        if (gameData.bMobileUIEnabled)
+            input = mobileController.horizontal_input;
+        else
+            input = Input.GetAxis(Utils.INPUT_AXIS_HORIZONTAL);
         float movement = input * MOVEMENT_SPEED * Time.deltaTime;
         transform.position += new Vector3(movement, 0f);
     }
