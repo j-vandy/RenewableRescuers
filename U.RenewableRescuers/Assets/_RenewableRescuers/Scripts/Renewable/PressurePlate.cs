@@ -19,8 +19,8 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if (objectsInTrigger == 0)
-        //    soundfx.PlayGeneral();
+        if (objectsInTrigger == 0)
+            soundfx.PlayLever();
 
         objectsInTrigger++;
         bIsOn = true;
@@ -34,7 +34,9 @@ public class PressurePlate : MonoBehaviour
         if (objectsInTrigger > 0)
             return;
 
-        //soundfx.PlayGeneral();
+
+        soundfx.PlayLever();
+
         bIsOn = false;
         foreach (var connection in connections)
             connection.PowerOff();

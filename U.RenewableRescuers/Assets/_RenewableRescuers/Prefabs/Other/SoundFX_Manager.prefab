@@ -444,3 +444,6 @@ MonoBehaviour:
   ui: {fileID: 8300000, guid: 9fa1c5327ea850b419fe7fcedb0f5d64, type: 3}
   winner: {fileID: 8300000, guid: e887830faebc26048a2a546b28565209, type: 3}
   wrong: {fileID: 8300000, guid: ff141ba0b2f8e6b46becafd31ff27a6f, type: 3}
+  land: {fileID: 8300000, guid: 26835347a01bb954d9c06f87ec435c43, type: 3}
+  door: {fileID: 8300000, guid: 4aa858521ba44904bbb2293ebfb28b53, type: 3}
+  lever: {fileID: 8300000, guid: 407ba9a2ab0c4b74bab3dd1cb799c0b6, type: 3}

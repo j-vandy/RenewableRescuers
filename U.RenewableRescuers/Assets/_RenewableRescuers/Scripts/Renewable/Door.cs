@@ -6,6 +6,7 @@ public class Door : Powerable
     private Animator animator;
     private string currAnimationState;
     [SerializeField] private BoxCollider2D doorCollider;
+    [SerializeField] private SoundFX_Manager sfx;
 
     private void Start()
     {
@@ -13,6 +14,8 @@ public class Door : Powerable
         if (animator == null)
             throw new NullReferenceException();
         if (doorCollider == null)
+            throw new NullReferenceException();
+        if (sfx == null)
             throw new NullReferenceException();
 
         currAnimationState = Utils.ANIMATION_DOOR_CLOSED;
@@ -24,20 +27,24 @@ public class Door : Powerable
             return;
 
         currAnimationState = newAnimationState;
-        animator.Play(newAnimationState);
+        if (animator != null)
+            animator.Play(newAnimationState);
     }
 
     public override void PowerOn()
     {
         doorCollider.enabled = false;
         ChangeAnimationState(Utils.ANIMATION_DOOR_ON_OPEN);
+        sfx.PlayDoor();
         base.PowerOn();
     }
 
     public override void PowerOff()
     {
-        doorCollider.enabled = true;
+        if (doorCollider != null)
+            doorCollider.enabled = true;
         ChangeAnimationState(Utils.ANIMATION_DOOR_ON_CLOSE);
+        sfx.PlayDoor();
         base.PowerOff();
     }
 }

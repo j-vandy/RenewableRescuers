@@ -16,6 +16,7 @@ public class Lever : MonoBehaviour
     [ShowIf("bIsLocked")]
     [SerializeField] private GameObject leverQuestion;
     [SerializeField] private List<Powerable> connections = new List<Powerable>();
+    [SerializeField] private SoundFX_Manager sfx;
 
     private void Awake()
     {
@@ -27,11 +28,16 @@ public class Lever : MonoBehaviour
         if (connections.Count <= 0)
             Debug.LogWarning("Lever has no connections");
 
+        if (sfx == null)
+            throw new NullReferenceException();
+
+
         // set "animation" to locked or unlocked
         if (bIsLocked)
             ChangeAnimationState(Utils.ANIMATION_LEVER_LOCKED);
         else
             ChangeAnimationState(Utils.ANIMATION_LEVER_UNLOCKED);
+
 
         foreach (var animClip in animator.runtimeAnimatorController.animationClips)
         {
@@ -90,6 +96,8 @@ public class Lever : MonoBehaviour
 
     private void Toggle()
     {
+        sfx.PlayLever();
+
         // toggle the switch state
         bIsOn = !bIsOn;
 

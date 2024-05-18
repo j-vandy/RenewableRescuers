@@ -1,28 +1,40 @@
 using UnityEngine;
 using System;
-using UnityEngine.SceneManagement;
 
 public class Ray : MonoBehaviour
 {
+    [SerializeField] private CameraFollow cameraFollow;
     [SerializeField] private Transform spriteTransform;
+    [SerializeField] private EnergySwitch energySwitch;
     public LayerMask layerToCollide;
+    private bool bFin = false;
 
     private void Start()
     {
         Physics2D.queriesHitTriggers = false;
         if (spriteTransform == null)
             throw new NullReferenceException();
+        if (cameraFollow == null)
+            throw new NullReferenceException();
     }
 
     private void Update()
     {
+        if (bFin)
+            return;
+
         // shoot out a ray down the x-axis
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, float.MaxValue, layerToCollide);
         if (hit)
         {
             // end level if ray meets renewable target
             if (hit.transform.tag == Utils.TAG_RENEWABLE_TARGET)
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+            {
+                // link stuff
+                cameraFollow.target = energySwitch.transform;
+                energySwitch.PowerOn();
+                bFin = true;
+            }
 
             // update ray render
             float dist = Mathf.Abs(transform.position.x - hit.point.x);

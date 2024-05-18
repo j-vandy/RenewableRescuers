@@ -10,7 +10,8 @@ public class GameDataInit : MonoBehaviour
         if (gameData == null)
             throw new NullReferenceException();
         gameData.bIsMobileDevice = SystemInfo.deviceType == DeviceType.Handheld;
-        gameData.bMobileUIEnabled = gameData.bIsMobileDevice;
+        if (!gameData.bMobileUIEnabled)
+            gameData.bMobileUIEnabled = gameData.bIsMobileDevice;
         gameData.time = 0f;
     }
 }

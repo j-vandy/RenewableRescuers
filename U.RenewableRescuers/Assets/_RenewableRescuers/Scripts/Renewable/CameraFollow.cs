@@ -1,7 +1,4 @@
-using JetBrains.Annotations;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
@@ -18,7 +15,7 @@ public class CameraFollow : MonoBehaviour
         else if (target == null)
             throw new NullReferenceException();
 
-        Vector2 pos = Vector2.Lerp(transform.position, target.position, Utils.easeOutCubic(SPEED * Time.deltaTime));
+        Vector2 pos = Vector2.Lerp(transform.position, target.position, Utils.easeOutBack(SPEED * Time.deltaTime));
         transform.position = new Vector3(pos.x, pos.y, -10f);
     }
 }

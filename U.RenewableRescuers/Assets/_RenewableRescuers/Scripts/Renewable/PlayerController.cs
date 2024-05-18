@@ -69,7 +69,6 @@ public class PlayerController : MonoBehaviour
 
         // horizontal movement
         float input;
-        Debug.Log(gameData.bMobileUIEnabled);
         if (gameData.bMobileUIEnabled)
             input = mobileController.horizontal_input;
         else
@@ -90,6 +89,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (OnPlayerLand != null)
                     OnPlayerLand();
+                soundfx.PlayLand();
             }
             bIsJumping = false;
             return;

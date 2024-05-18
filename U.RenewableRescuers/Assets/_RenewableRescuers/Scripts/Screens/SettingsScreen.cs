@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System;
 
 public class SettingsScreen : Screen
@@ -16,7 +15,8 @@ public class SettingsScreen : Screen
             throw new NullReferenceException();
         if (mobileUIToggle == null)
             throw new NullReferenceException();
-        mobileUIToggle.mobileController?.SetActive(gameData.bMobileUIEnabled);
+        if (mobileUIToggle.mobileController != null)
+            mobileUIToggle.mobileController.SetActive(gameData.bMobileUIEnabled);
     }
 
     public override void Enable()

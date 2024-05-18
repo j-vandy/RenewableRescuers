@@ -16,6 +16,9 @@ public class SoundFX_Manager : MonoBehaviour
     [SerializeField] private AudioClip ui;
     [SerializeField] private AudioClip winner;
     [SerializeField] private AudioClip wrong;
+    [SerializeField] private AudioClip land;
+    [SerializeField] private AudioClip door;
+    [SerializeField] private AudioClip lever;
     private Queue<AudioSource> queue = new Queue<AudioSource>();
 
     private void OnEnable()
@@ -65,4 +68,7 @@ public class SoundFX_Manager : MonoBehaviour
     public void PlayUI() => PlayClip(ui);
     public void PlayWinner() => PlayClip(winner);
     public void PlayWrong() => PlayClip(wrong);
+    public void PlayLand() => PlayClip(land);
+    public void PlayDoor() => PlayClip(door);
+    public void PlayLever() => PlayClip(lever);
 }

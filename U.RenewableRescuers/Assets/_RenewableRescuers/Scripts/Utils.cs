@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class Utils
@@ -31,9 +30,19 @@ public class Utils
     public const string ANIMATION_DOOR_ON_CLOSE = "Door_OnClose";
     public const string ANIMATION_DOOR_ON_OPEN = "Door_OnOpen";
 
+    public const string ANIMATION_SWITCH_OFF = "Off";
+    public const string ANIMATION_SWITCH_TURN_ON = "TurnOn";
+
     public static float easeOutCubic(float t)
     {
         return 1 - Mathf.Pow(1 - t, 3);
+    }
+
+    public static float easeOutBack(float t)
+    {
+        const float c1 = 1.70158f;
+        const float c3 = c1 + 1;
+        return (float) (1 + c3 * Math.Pow(t - 1, 3) + c1 * Math.Pow(t - 1, 2));
     }
 
     public static void FreezeTime()
