@@ -6,6 +6,7 @@ TagManager:
   tags:
   - RenewableTarget
   - Box
+  - Solar
   layers:
   - Default
   - TransparentFX

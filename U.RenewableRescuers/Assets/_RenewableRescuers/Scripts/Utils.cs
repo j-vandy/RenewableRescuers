@@ -4,6 +4,7 @@ using UnityEngine;
 public class Utils
 {
     public const string TAG_RENEWABLE_TARGET = "RenewableTarget";
+    public const string TAG_SOLAR = "Solar";
 
     public const string SCENE_MAIN_MENU = "MainMenu";
     public const string SCENE_RENEWABLE_ENERGY = "RenewableEnergy";

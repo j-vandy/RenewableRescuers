@@ -11,6 +11,7 @@ public class LeverQuestion : MonoBehaviour
 {
     private ButtonToggle selectedAnswer = null;
     [SerializeField] private Lever lever;
+    [SerializeField] private SolarPanel solarPanel;
     [SerializeField] private GameObject errorMessage;
     [SerializeField] private GameObject correctMessage;
     [SerializeField] private SoundFX_Manager soundfx_manager;
@@ -22,8 +23,6 @@ public class LeverQuestion : MonoBehaviour
 
     private void Start()
     {
-        if (lever == null)
-            throw new NullReferenceException();
         if (a == null)
             throw new NullReferenceException();
         if (b == null)
@@ -53,7 +52,12 @@ public class LeverQuestion : MonoBehaviour
     public void Close()
     {
         // unlock the lever
-        lever.Unlock();
+        if (lever != null)
+            lever.Unlock();
+        else
+            solarPanel.Unlock();
+
+        Utils.UnfreezeTime();
         gameObject.SetActive(false);
     }
 

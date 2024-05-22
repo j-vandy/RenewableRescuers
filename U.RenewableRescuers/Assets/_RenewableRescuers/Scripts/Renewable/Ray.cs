@@ -8,6 +8,7 @@ public class Ray : MonoBehaviour
     [SerializeField] private EnergySwitch energySwitch;
     public LayerMask layerToCollide;
     private bool bFin = false;
+    private GameObject solarHit = null;
 
     private void Start()
     {
@@ -34,6 +35,32 @@ public class Ray : MonoBehaviour
                 cameraFollow.target = energySwitch.transform;
                 energySwitch.PowerOn();
                 bFin = true;
+            }
+            else if (hit.transform.tag == Utils.TAG_SOLAR)
+            {
+                if (hit.transform.gameObject != solarHit)
+                {
+                    if (solarHit != null)
+                    {
+                        solarHit.GetComponentInChildren<SolarPanel>().PowerOff();
+                        solarHit = null;
+                    }
+                    GameObject go = hit.transform.gameObject;
+                    SolarPanel solar_panel= go.GetComponentInChildren<SolarPanel>();
+                    if (!solar_panel.isLocked)
+                    {
+                        solarHit = go;
+                        solar_panel.PowerOn();
+                    }
+                }
+            }
+            else
+            {
+                if (solarHit != null)
+                {
+                    solarHit.GetComponentInChildren<SolarPanel>().PowerOff();
+                    solarHit = null;
+                }
             }
 
             // update ray render
