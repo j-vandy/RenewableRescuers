@@ -104,11 +104,11 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 25
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -331,6 +331,8 @@ MonoBehaviour:
   image: {fileID: 6379349150925758801}
   toggledOn: {fileID: 21300000, guid: 382f7f7ffe0c73e42bb840bfdd2c7c63, type: 3}
   toggledOff: {fileID: 21300000, guid: 421d58eb7c05c584185856c59deb2baa, type: 3}
+  mobileController: {fileID: 0}
+  gameData: {fileID: 0}
   answer: 0
   bStayOn: 1
   isOn: 0

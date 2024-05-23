@@ -9,6 +9,7 @@ public class Ray : MonoBehaviour
     public LayerMask layerToCollide;
     private bool bFin = false;
     private GameObject solarHit = null;
+    private GameObject reflection = null;
 
     private void Start()
     {
@@ -19,13 +20,27 @@ public class Ray : MonoBehaviour
             throw new NullReferenceException();
     }
 
+    public void NoHit()
+    {
+        if (solarHit != null)
+        {
+            solarHit.GetComponentInChildren<SolarPanel>().PowerOff();
+            solarHit = null;
+        }
+        if (reflection != null)
+        {
+            reflection.GetComponent<Reflection>().PowerOff();
+            reflection = null;
+        }
+    }
+
     private void Update()
     {
         if (bFin)
             return;
 
         // shoot out a ray down the x-axis
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, float.MaxValue, layerToCollide);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, float.MaxValue, layerToCollide);
         if (hit)
         {
             // end level if ray meets renewable target
@@ -38,6 +53,11 @@ public class Ray : MonoBehaviour
             }
             else if (hit.transform.tag == Utils.TAG_SOLAR)
             {
+                if (reflection != null)
+                {
+                    reflection.GetComponent<Reflection>().PowerOff();
+                    reflection = null;
+                }
                 if (hit.transform.gameObject != solarHit)
                 {
                     if (solarHit != null)
@@ -54,20 +74,41 @@ public class Ray : MonoBehaviour
                     }
                 }
             }
-            else
+            else if (hit.transform.tag == Utils.TAG_REFLECT)
             {
                 if (solarHit != null)
                 {
                     solarHit.GetComponentInChildren<SolarPanel>().PowerOff();
                     solarHit = null;
                 }
+                if (hit.transform.gameObject != reflection)
+                {
+                    if (reflection != null)
+                    {
+                        reflection.GetComponent<Reflection>().PowerOff();
+                        reflection = null;
+                    }
+                    reflection = hit.transform.gameObject;
+                    reflection.GetComponent<Reflection>().PowerOn();
+                }
+                else
+                {
+                    if (!reflection.GetComponent<Reflection>().isActive)
+                        reflection.GetComponent<Reflection>().PowerOn();
+                }
+            }
+            else
+            {
+                NoHit();
             }
 
             // update ray render
-            float dist = Mathf.Abs(transform.position.x - hit.point.x);
-            float half_way = transform.position.x + dist / 2 ;
-            spriteTransform.position = new Vector3(half_way, spriteTransform.position.y, 0f);
-            spriteTransform.localScale = new Vector3(dist, 1f, 1f);
+            Vector3 hitPoint = new Vector3(hit.point.x, hit.point.y, 0f);
+            Vector3 localHitPoint = hitPoint - transform.position;
+            Vector3 midpoint = transform.position + (localHitPoint / 2);
+            Vector3 scale = new Vector3(localHitPoint.magnitude, 1f, 1f);
+            spriteTransform.position = midpoint;
+            spriteTransform.localScale = scale;
         }
     }
 }

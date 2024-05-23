@@ -15,7 +15,7 @@ public class StartScreen : Screen
             throw new NullReferenceException();
     }
 
-    public void StartButtonClicked() => SceneManager.LoadScene(Utils.SCENE_RENEWABLE_ENERGY);
+    public void StartButtonClicked() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
     public void SettingsButtonClicked() => ScreenTransition(settingsScreen);
 

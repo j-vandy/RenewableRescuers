@@ -50,6 +50,7 @@ public class EnergySwitch : MonoBehaviour
         Destroy(progressBar);
         sfx.PlayExplosion();
         yield return new WaitForSeconds(2f);
+        Water.bGameOver = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

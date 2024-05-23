@@ -13,9 +13,13 @@ public class SolarPanel : MonoBehaviour
     [ShowIf("isLocked")]
     [SerializeField] private GameObject questionnare;
     [SerializeField] private List<Powerable> connections = new List<Powerable>();
+    [SerializeField] private SoundFX_Manager soundFXManager;
+    [SerializeField] private ParticleSystem particle;
+    private Vector3 init_pos;
 
     void Start()
     {
+        init_pos = transform.parent.position;
         if (isLocked && question == null)
             throw new NullReferenceException();
         if (connections.Count <= 0)
@@ -60,5 +64,12 @@ public class SolarPanel : MonoBehaviour
             return;
         foreach (var connection in connections)
             connection.PowerOn();
+    }
+
+    public void Return()
+    {
+        particle.Play();
+        soundFXManager.PlayExplosion();
+        transform.parent.position = init_pos;
     }
 }

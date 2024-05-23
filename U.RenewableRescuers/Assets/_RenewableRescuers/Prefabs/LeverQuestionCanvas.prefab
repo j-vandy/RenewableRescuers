@@ -303,7 +303,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4078728293575992840
 RectTransform:
   m_ObjectHideFlags: 0
@@ -406,6 +406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lever: {fileID: 0}
+  solarPanel: {fileID: 0}
   errorMessage: {fileID: 9165466094086053138, guid: ad91651f825122a4db4d2e621e4722ff, type: 3}
   correctMessage: {fileID: 9165466094086053138, guid: 1ed6221d57c42bc4db8e82b456493155, type: 3}
   soundfx_manager: {fileID: 0}

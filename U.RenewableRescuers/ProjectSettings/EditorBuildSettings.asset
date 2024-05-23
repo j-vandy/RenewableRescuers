@@ -9,8 +9,23 @@ EditorBuildSettings:
     path: Assets/_RenewableRescuers/Scenes/MainMenu.unity
     guid: ac3d99db56dad834392590b7997a3f3d
   - enabled: 1
-    path: Assets/_RenewableRescuers/Scenes/RenewableEnergy.unity
+    path: Assets/_RenewableRescuers/Scenes/AirLvl1.unity
+    guid: 5d61f78b07e0fad419a273fa40ff7f3c
+  - enabled: 1
+    path: Assets/_RenewableRescuers/Scenes/AirLvl2.unity
     guid: 5ba817c79fea0e2429b02b5034252a1e
+  - enabled: 1
+    path: Assets/_RenewableRescuers/Scenes/SunLvl1.unity
+    guid: 97fe9b056ba5d3f449d0bc7c136d9413
+  - enabled: 1
+    path: Assets/_RenewableRescuers/Scenes/SunLvl2.unity
+    guid: 7b951d731652d454d8b09bbb1b0a0b9d
+  - enabled: 1
+    path: Assets/_RenewableRescuers/Scenes/WaterLvl1.unity
+    guid: 5bdda88e5758e054aac6b76c5804b808
+  - enabled: 1
+    path: Assets/_RenewableRescuers/Scenes/WaterLvl2.unity
+    guid: fe78065abaf1f414aa8b9d86a9b9302a
   - enabled: 1
     path: Assets/_RenewableRescuers/Scenes/Winner.unity
     guid: e94aed61c897fcd448e1bf0cb3baef84
